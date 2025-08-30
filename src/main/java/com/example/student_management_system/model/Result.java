@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Result {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
