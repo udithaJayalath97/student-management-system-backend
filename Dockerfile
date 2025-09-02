@@ -1,5 +1,4 @@
 FROM openjdk:21-jdk
-WORKDIR /app
-COPY target/university-course-management-system.jar app.jar
+COPY target/university-course-management-system.jar .
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-jar","university-course-management-system.jar"]
