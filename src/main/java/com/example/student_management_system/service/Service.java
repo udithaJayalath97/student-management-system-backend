@@ -97,8 +97,9 @@ public class Service {
         return enrollmentRepository.findAll();
     }
 
-    public List<Enrollment> getEnrollmentsByStudent(Long studentId) {
-        return enrollmentRepository.findByStudentId(studentId);
+    public List<Enrollment> getEnrollmentsByStudent(String studentId) {
+        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+        return enrollmentRepository.findByStudentId(student.getId());
     }
 
     public Result recordResult(String studentId, String code, double score) {
