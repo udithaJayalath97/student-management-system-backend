@@ -69,8 +69,8 @@ public class Controller {
         return service.getAllEnrollments();
     }
 
-    @GetMapping("/enrollments/student/{studentId}")
-    public List<Enrollment> getEnrollmentsByStudent(@PathVariable Long studentId) {
+    @GetMapping("/enrollments/student")
+    public List<Enrollment> getEnrollmentsByStudent(@RequestParam String studentId) {
         return service.getEnrollmentsByStudent(studentId);
     }
 
