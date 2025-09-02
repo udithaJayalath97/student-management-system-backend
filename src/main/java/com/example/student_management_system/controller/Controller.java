@@ -1,5 +1,7 @@
 package com.example.student_management_system.controller;
 
+import com.example.student_management_system.dto.CreateCourseDTO;
+import com.example.student_management_system.dto.CreateStudentDTO;
 import com.example.student_management_system.model.Course;
 import com.example.student_management_system.model.Enrollment;
 import com.example.student_management_system.model.Result;
@@ -23,7 +25,7 @@ public class Controller {
     }
 
     @PostMapping("/createCourse")
-    public Course createCourse(@RequestBody Course course) {
+    public Course createCourse(@RequestBody CreateCourseDTO course) {
         return service.createCourse(course);
     }
 
@@ -43,7 +45,7 @@ public class Controller {
     }
 
     @PostMapping("/students/create")
-    public Student createStudent(@RequestBody Student student) {
+    public Student createStudent(@RequestBody CreateStudentDTO student) {
         return service.createStudent(student);
     }
 
@@ -58,8 +60,8 @@ public class Controller {
     }
 
     @PostMapping("/student/Enrollment")
-    public Enrollment enrollStudent(@RequestParam Long studentId, @RequestParam Long courseId) {
-        return service.enrollStudent(studentId, courseId);
+    public Enrollment enrollStudent(@RequestParam String studentId, @RequestParam String code) {
+        return service.enrollStudent(studentId, code);
     }
 
     @GetMapping("/enrollments")
@@ -73,12 +75,16 @@ public class Controller {
     }
 
     @PostMapping("/results/add")
-    public Result recordResult(@RequestParam Long studentId, @RequestParam Long courseId, @RequestParam double score) {
-        return service.recordResult(studentId, courseId, score);
+    public Result recordResult(@RequestParam String studentId, @RequestParam String code, @RequestParam double score) {
+        return service.recordResult(studentId, code, score);
     }
 
-    @GetMapping("results/student/{studentId}")
-    public List<Result> getResultsByStudent(@PathVariable Long studentId) {
+    @GetMapping("/results")
+    public List<Result> getAllResults() {
+        return service.getResults();
+    }
+    @GetMapping("/results/student")
+    public List<Result> getResultsByStudent(@RequestParam String studentId) {
         return service.getResultsByStudent(studentId);
     }
 }

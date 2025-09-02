@@ -16,6 +16,7 @@ public class Course {
     private Long id;
 
     private String title;
+    @Column(name = "code", unique = true, nullable = false)
     private String code;
     private String description;
     private int credits;

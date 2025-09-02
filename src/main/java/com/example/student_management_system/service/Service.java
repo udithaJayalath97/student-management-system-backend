@@ -1,5 +1,7 @@
 package com.example.student_management_system.service;
 
+import com.example.student_management_system.dto.CreateCourseDTO;
+import com.example.student_management_system.dto.CreateStudentDTO;
 import com.example.student_management_system.model.Course;
 import com.example.student_management_system.model.Enrollment;
 import com.example.student_management_system.model.Result;
@@ -32,9 +34,14 @@ public class Service {
         return courseRepository.findAll();
     }
 
-    public Course createCourse(Course course) {
+    public Course createCourse(CreateCourseDTO course) {
+        Course newCourse = new Course();
+        newCourse.setTitle(course.getTitle());
+        newCourse.setDescription(course.getDescription());
+        newCourse.setCode(course.getCode());
+        newCourse.setCredits(course.getCredits());
 
-        return courseRepository.save(course);
+        return courseRepository.save(newCourse);
     }
 
     public Course getCourseById(Long id) {
@@ -51,9 +58,14 @@ public class Service {
         return studentRepository.findAll();
     }
 
-    public Student createStudent(Student student) {
-
-        return studentRepository.save(student);
+    public Student createStudent(CreateStudentDTO student) {
+        Student newStudent = new Student();
+        newStudent.setStudentId(student.getStudentId());
+        newStudent.setFirstName(student.getFirstName());
+        newStudent.setLastName(student.getLastName());
+        newStudent.setEmail(student.getEmail());
+        newStudent.setPhoneNumber(student.getPhoneNumber());
+        return studentRepository.save(newStudent);
     }
 
     public Student getStudentById(Long id) {
@@ -66,10 +78,10 @@ public class Service {
         studentRepository.deleteById(id);
     }
 
-    public Enrollment enrollStudent(Long studentId, Long courseId) {
-        Student student = studentRepository.findById(studentId).orElseThrow(
+    public Enrollment enrollStudent(String studentId, String code) {
+        Student student = studentRepository.findByStudentId(studentId).orElseThrow(
                 () -> new RuntimeException("Student not found"));
-        Course course = courseRepository.findById(courseId).orElseThrow(
+        Course course = courseRepository.findByCode(code).orElseThrow(
                 () -> new RuntimeException("Course not found"));
 
         Enrollment enrollment = new Enrollment();
@@ -89,9 +101,9 @@ public class Service {
         return enrollmentRepository.findByStudentId(studentId);
     }
 
-    public Result recordResult(Long studentId, Long courseId, double score) {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+    public Result recordResult(String studentId, String code, double score) {
+        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+        Course course = courseRepository.findByCode(code).orElseThrow(() -> new RuntimeException("Course not found"));
 
         Result result = new Result();
         result.setStudent(student);
@@ -102,8 +114,12 @@ public class Service {
         return resultRepository.save(result);
     }
 
-    public List<Result> getResultsByStudent(Long studentId) {
+    public List<Result> getResultsByStudent(String studentId) {
+        Student student = studentRepository.findByStudentId(studentId).orElseThrow(() -> new RuntimeException("Student not found"));
+        return resultRepository.findByStudentId(student.getId());
+    }
 
-        return resultRepository.findByStudentId(studentId);
+    public List<Result> getResults() {
+        return resultRepository.findAll();
     }
 }
